@@ -1,0 +1,26 @@
+{
+  "name": "kodfika-forum-backend",
+  "version": "1.0.0",
+  "description": "Backend service for Kodfika Forum Slack notifications",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["slack", "webhooks", "forum", "notifications"],
+  "author": "Kodfika",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "helmet": "^7.1.0",
+    "express-rate-limit": "^7.1.5",
+    "dotenv": "^16.3.1",
+    "morgan": "^1.10.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
