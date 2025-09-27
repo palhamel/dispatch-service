@@ -19,7 +19,7 @@ app.use(helmet({
       scriptSrc: ["'self'"],
       styleSrc: ["'self'", "'unsafe-inline'"],
       imgSrc: ["'self'", "data:", "https:"],
-      connectSrc: ["'self'", "https://hooks.slack.com"]
+      connectSrc: ["'self'", "https://discord.com", "https://discordapp.com"]
     }
   }
 }))
@@ -110,16 +110,16 @@ app.get('/health', (req, res) => {
   })
 })
 
-// Slack webhook proxy endpoint
-app.post('/api/slack/webhook', validateApiKey, async (req, res) => {
+// Discord webhook proxy endpoint
+app.post('/api/discord/webhook', validateApiKey, async (req, res) => {
   try {
-    const webhookUrl = process.env.SLACK_WEBHOOK_URL
+    const webhookUrl = process.env.DISCORD_WEBHOOK_URL
 
     if (!webhookUrl) {
-      console.error('❌ SLACK_WEBHOOK_URL not configured')
+      console.error('❌ DISCORD_WEBHOOK_URL not configured')
       return res.status(500).json({
         success: false,
-        error: 'Slack webhook URL not configured'
+        error: 'Discord webhook URL not configured'
       })
     }
 
@@ -131,13 +131,13 @@ app.post('/api/slack/webhook', validateApiKey, async (req, res) => {
       })
     }
 
-    console.log('📤 Forwarding Slack notification...', {
+    console.log('📤 Forwarding Discord notification...', {
       timestamp: new Date().toISOString(),
       ip: req.ip,
       userAgent: req.get('User-Agent')
     })
 
-    // Forward the request to Slack
+    // Forward the request to Discord
     const response = await fetch(webhookUrl, {
       method: 'POST',
       headers: {
@@ -148,15 +148,15 @@ app.post('/api/slack/webhook', validateApiKey, async (req, res) => {
     })
 
     if (response.ok) {
-      console.log('✅ Slack notification sent successfully')
+      console.log('✅ Discord notification sent successfully')
       res.json({
         success: true,
-        message: 'Notification sent to Slack',
+        message: 'Notification sent to Discord',
         timestamp: new Date().toISOString()
       })
     } else {
       const errorText = await response.text()
-      console.error('❌ Slack webhook failed:', {
+      console.error('❌ Discord webhook failed:', {
         status: response.status,
         statusText: response.statusText,
         error: errorText
@@ -164,13 +164,13 @@ app.post('/api/slack/webhook', validateApiKey, async (req, res) => {
 
       res.status(response.status).json({
         success: false,
-        error: `Slack API error: ${response.status} ${response.statusText}`,
+        error: `Discord API error: ${response.status} ${response.statusText}`,
         details: process.env.NODE_ENV === 'development' ? errorText : undefined
       })
     }
 
   } catch (error) {
-    console.error('❌ Server error while forwarding to Slack:', error)
+    console.error('❌ Server error while forwarding to Discord:', error)
     res.status(500).json({
       success: false,
       error: 'Internal server error',
@@ -179,33 +179,26 @@ app.post('/api/slack/webhook', validateApiKey, async (req, res) => {
   }
 })
 
-// Test endpoint to verify Slack connection
-app.post('/api/slack/test', validateApiKey, async (req, res) => {
+// Test endpoint to verify Discord connection
+app.post('/api/discord/test', validateApiKey, async (req, res) => {
   try {
     const testPayload = {
-      text: "🧪 Test från Kodfika Forum Backend",
-      blocks: [
+      content: "🧪 Test från Kodfika Forum Backend",
+      embeds: [
         {
-          type: "section",
-          text: {
-            type: "mrkdwn",
-            text: "✅ Backend Slack-integration fungerar! Serveranslutning bekräftad."
+          title: "✅ Backend Discord-integration fungerar!",
+          description: "Serveranslutning bekräftad.",
+          color: 5814783, // Discord blue color
+          timestamp: new Date().toISOString(),
+          footer: {
+            text: `Server: ${process.env.NODE_ENV || 'development'}`
           }
-        },
-        {
-          type: "context",
-          elements: [
-            {
-              type: "mrkdwn",
-              text: `🕐 ${new Date().toLocaleString('sv-SE')} | 🖥️ Server: ${process.env.NODE_ENV || 'development'}`
-            }
-          ]
         }
       ]
     }
 
     // Use the main webhook endpoint
-    const testResponse = await fetch(`http://localhost:${port}/api/slack/webhook`, {
+    const testResponse = await fetch(`http://localhost:${port}/api/discord/webhook`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -247,8 +240,8 @@ app.get('/api/docs', (req, res) => {
     version: '1.0.0',
     endpoints: {
       'GET /health': 'Health check (no auth required)',
-      'POST /api/slack/webhook': 'Send notification to Slack (requires API key)',
-      'POST /api/slack/test': 'Test Slack connection (requires API key)',
+      'POST /api/discord/webhook': 'Send notification to Discord (requires API key)',
+      'POST /api/discord/test': 'Test Discord connection (requires API key)',
       'GET /api/docs': 'This documentation'
     },
     authentication: {
@@ -290,15 +283,15 @@ app.listen(port, () => {
   console.log(`📍 Server URL: http://localhost:${port}`)
   console.log(`🏥 Health check: http://localhost:${port}/health`)
   console.log(`📚 API docs: http://localhost:${port}/api/docs`)
-  console.log(`📡 Slack webhook: http://localhost:${port}/api/slack/webhook`)
-  console.log(`🧪 Slack test: http://localhost:${port}/api/slack/test`)
+  console.log(`📡 Discord webhook: http://localhost:${port}/api/discord/webhook`)
+  console.log(`🧪 Discord test: http://localhost:${port}/api/discord/test`)
   console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`)
   console.log(`🔐 API Key required: ${process.env.API_KEY ? 'Yes' : 'No'}`)
   console.log(`📊 Rate limit: ${process.env.RATE_LIMIT_MAX_REQUESTS || 100} requests per ${(parseInt(process.env.RATE_LIMIT_WINDOW_MS) || 900000) / 60000} minutes`)
   console.log('═══════════════════════════════════════\n')
 
-  if (!process.env.SLACK_WEBHOOK_URL) {
-    console.warn('⚠️ Warning: SLACK_WEBHOOK_URL not configured in .env file')
+  if (!process.env.DISCORD_WEBHOOK_URL) {
+    console.warn('⚠️ Warning: DISCORD_WEBHOOK_URL not configured in .env file')
   }
 })
 
