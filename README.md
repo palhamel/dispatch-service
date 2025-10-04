@@ -69,6 +69,11 @@ npm run dev
 npm start
 ```
 
+### Code Quality
+```bash
+npm run lint    # Run ESLint checks
+```
+
 The server will start on `http://localhost:3001` (or your configured PORT).
 
 ## API Endpoints
@@ -137,7 +142,78 @@ const response = await fetch(`${BACKEND_URL}/api/slack/webhook`, {
 - Content-Type verification
 - Size limits on request bodies
 
+## Development Workflow
+
+### Pull Request Process (Recommended)
+
+This project uses GitHub Actions for automated quality checks before deployment:
+
+1. **Create Feature Branch**
+   ```bash
+   git checkout -b feature-name
+   ```
+
+2. **Make Changes and Test**
+   ```bash
+   npm run lint    # Verify code quality
+   npm run dev     # Test locally
+   ```
+
+3. **Commit and Push**
+   ```bash
+   git add .
+   git commit -m "feat: description of changes"
+   git push -u origin feature-name
+   ```
+
+4. **Create Pull Request on GitHub**
+   - Go to your repository on GitHub
+   - Click "Compare & pull request" button
+   - Fill in PR description
+   - **GitHub Actions will automatically run:**
+     - ✅ ESLint checks (0 errors required)
+     - ✅ Server syntax verification
+     - ✅ Security scans
+
+5. **Merge When Checks Pass**
+   - Review the changes
+   - Click "Merge pull request"
+   - **Coolify automatically deploys to VPS**
+
+### GitHub Actions CI/CD
+
+The project includes automated checks on every pull request:
+
+- **Workflow File:** `.github/workflows/pr-checks.yml`
+- **Triggers:** Pull requests to `main` or `develop` branches
+- **Checks:**
+  - ESLint code quality
+  - Node.js syntax verification
+  - Dependency installation
+  - Security scanning
+
+**Benefits:**
+- 🛡️ Prevents broken code from reaching production
+- 🚀 No changes to existing Coolify deployment
+- ✅ Automated quality gates before merge
+- 📊 Visible check status on every PR
+
 ## Deployment
+
+### Coolify VPS Deployment (Current Setup)
+
+This backend deploys automatically via Coolify webhook:
+
+1. Merge PR to `main` branch
+2. GitHub webhook triggers Coolify
+3. Coolify pulls latest code
+4. Coolify rebuilds and deploys to VPS
+5. Backend is live with zero downtime
+
+**Coolify Configuration:**
+- See `coolify.json` for deployment settings
+- Webhook configured in GitHub repository settings
+- Automatic deployment on push to `main`
 
 ### Option 1: Traditional Hosting
 1. Copy the `backend/` folder to your server
