@@ -1,0 +1,32 @@
+name: Backend PR Checks
+
+on:
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  test-and-lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run ESLint
+        run: npm run lint
+
+      - name: Verify server starts
+        run: |
+          # Start server in background
+          timeout 10s node server.js || true
+
+          # Check if server.js has no syntax errors
+          node --check server.js

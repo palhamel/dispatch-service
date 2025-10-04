@@ -1,0 +1,67 @@
+# Backend Code Review Checklist
+# Node.js + Express + Discord Webhooks
+
+## Security
+- [ ] No hardcoded credentials/API keys (use .env)
+- [ ] All user input validated and sanitized
+- [ ] SQL injection prevention (if using DB)
+- [ ] CORS configured correctly
+- [ ] Helmet security headers enabled
+- [ ] Rate limiting configured (express-rate-limit)
+- [ ] Environment variables validated on startup
+- [ ] Secrets never logged or exposed
+
+## API Design
+- [ ] RESTful conventions followed
+- [ ] Proper HTTP status codes used
+- [ ] Consistent error response format
+- [ ] Request validation middleware
+- [ ] Authentication/authorization checks
+- [ ] API versioning considered
+- [ ] Request logging (morgan) configured
+
+## Performance
+- [ ] Database queries optimized (if applicable)
+- [ ] Async/await used properly
+- [ ] No blocking operations in request handlers
+- [ ] Appropriate timeout configurations
+- [ ] Memory leaks prevented
+
+## Code Quality
+- [ ] No console.logs (use proper logging)
+- [ ] Error handling middleware implemented
+- [ ] Try/catch blocks for async operations
+- [ ] Functions under 50 lines
+- [ ] Clear variable/function names
+- [ ] Environment configs separated from code
+- [ ] Comments only where needed
+
+## Error Handling
+- [ ] Global error handler middleware
+- [ ] Async errors caught properly
+- [ ] Meaningful error messages
+- [ ] Error logging implemented
+- [ ] Graceful shutdown on critical errors
+
+## Discord Integration
+- [ ] Webhook URLs stored securely
+- [ ] Payload formatting validated (Discord embed format)
+- [ ] Retry logic for failed webhooks
+- [ ] Rate limiting for Discord API (5 requests/2 seconds)
+- [ ] Error handling for failed notifications
+- [ ] Embed limits respected (6000 chars total, 256 title, 4096 description)
+
+## Environment & Config
+- [ ] .env.example up to date
+- [ ] All required env vars documented
+- [ ] Environment validation on startup
+- [ ] Proper NODE_ENV handling
+- [ ] Port configuration flexible
+
+## Before Commit
+- [ ] Code runs locally without errors
+- [ ] All routes tested manually/automatically
+- [ ] No sensitive data in logs
+- [ ] Dependencies up to date (npm audit)
+- [ ] Reviewed changes in git diff
+- [ ] README updated if needed
