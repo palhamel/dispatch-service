@@ -30,17 +30,17 @@ These are the tasks to be completed for the spec detailed in @backend/.agent-os/
   - [x] 3.4 Implement middleware/authenticate.ts - X-API-Key header only, app resolution, admin key
   - [x] 3.5 Verify all 41 tests pass, query param auth fully rejected
 
-- [ ] 4. Input validation and sanitization (security-critical)
-  - [ ] 4.1 Write tests for utils/sanitize.js (HTML stripping, XSS prevention, length limits, null handling, Swedish chars)
-  - [ ] 4.2 Implement utils/sanitize.js - input sanitization with strict HTML removal
-  - [ ] 4.3 Write tests for middleware/validate.js (required fields, length limits, email format, channel existence)
-  - [ ] 4.4 Implement middleware/validate.js - payload structure validation with clear error messages
-  - [ ] 4.5 Verify all validation tests pass
+- [x] 4. Input validation and sanitization (security-critical)
+  - [x] 4.1 Write tests for utils/sanitize.ts (HTML stripping, XSS prevention, length limits, null handling, Swedish chars)
+  - [x] 4.2 Implement utils/sanitize.ts - input sanitization with strict HTML removal
+  - [x] 4.3 Write tests for middleware/validate.ts (required fields, length limits, email format, channel existence)
+  - [x] 4.4 Implement middleware/validate.ts - payload structure validation with clear error messages
+  - [x] 4.5 Verify all 71 tests pass (30 new validation tests)
 
-- [ ] 5. Spam detection (security)
-  - [ ] 5.1 Write tests for utils/spam.js (medical, gambling, adult, marketing, URLs, HTML, clean Swedish/English text)
-  - [ ] 5.2 Implement utils/spam.js - spam detection adapted from Kodfika's useSendContactForm.js patterns
-  - [ ] 5.3 Verify all spam tests pass, no false positives on normal Swedish text
+- [x] 5. Spam detection (security)
+  - [x] 5.1 Write tests for utils/spam.ts (medical, gambling, adult, marketing, URLs, HTML, clean Swedish/English text)
+  - [x] 5.2 Implement utils/spam.ts - spam detection adapted from Kodfika's useSendContactForm.js patterns
+  - [x] 5.3 Verify all 90 tests pass, no false positives on normal Swedish text
 
 - [ ] 6. Discord channel adapter
   - [ ] 6.1 Write tests for channels/discord.js (embed formatting, sender fields, metadata, success/failure handling, timeout)
