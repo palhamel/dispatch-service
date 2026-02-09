@@ -1,7 +1,7 @@
 import type Database from 'better-sqlite3'
 import type { MessageRecord } from '../types.js'
 
-interface LogMessageData {
+export interface LogMessageData {
   app: string
   channel: string
   body: string
@@ -12,19 +12,19 @@ interface LogMessageData {
   ip_address?: string
 }
 
-interface GetMessagesParams {
+export interface GetMessagesParams {
   app?: string
   status?: string
   limit?: number
   offset?: number
 }
 
-interface GetMessagesResult {
+export interface GetMessagesResult {
   messages: MessageRecord[]
   total: number
 }
 
-interface AppStats {
+export interface AppStats {
   totalMessages: number
   pending: number
   sent: number
@@ -33,7 +33,7 @@ interface AppStats {
   lastMessage: string | null
 }
 
-interface StatsResult {
+export interface StatsResult {
   totalMessages: number
   apps: Record<string, AppStats>
 }

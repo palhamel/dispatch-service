@@ -1,11 +1,11 @@
-name: Backend PR Checks
+name: Dispatch PR Checks
 
 on:
   pull_request:
     branches: [main, develop]
 
 jobs:
-  test-and-lint:
+  test-and-typecheck:
     runs-on: ubuntu-latest
 
     steps:
@@ -14,19 +14,17 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
           cache: 'npm'
 
       - name: Install dependencies
         run: npm ci
 
+      - name: TypeScript type check
+        run: npm run typecheck
+
+      - name: Run tests
+        run: npm run test:run
+
       - name: Run ESLint
         run: npm run lint
-
-      - name: Verify server starts
-        run: |
-          # Start server in background
-          timeout 10s node server.js || true
-
-          # Check if server.js has no syntax errors
-          node --check server.js

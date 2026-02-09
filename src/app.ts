@@ -218,7 +218,7 @@ export const createApp = (options: AppOptions) => {
 
   // --- POST /api/test/:channel (admin only) ---
   app.post('/api/test/:channel', authenticate, requireAdmin, async (req, res) => {
-    const channel = req.params.channel
+    const channel = req.params.channel as string
     const targetApp = req.body.app as string | undefined
 
     if (!targetApp) {
