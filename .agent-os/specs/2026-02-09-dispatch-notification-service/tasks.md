@@ -64,12 +64,13 @@ These are the tasks to be completed for the spec detailed in @backend/.agent-os/
   - [x] 8.7 GET /health already reflects dispatch v2.0.0 (done in Task 7)
   - [x] 8.8 Verify all 134 tests pass (17 new admin tests)
 
-- [ ] 9. Security hardening and final verification
-  - [ ] 9.1 Security audit: verify no API keys can leak via query params, logs, or error responses
-  - [ ] 9.2 Security audit: verify all user input is sanitized before database storage and Discord forwarding
-  - [ ] 9.3 Security audit: verify error responses in production never expose stack traces or internal details
-  - [ ] 9.4 Security audit: verify Helmet CSP headers are correct for new endpoints
-  - [ ] 9.5 Review CORS configuration for production origins
-  - [ ] 9.6 Run full test suite - all tests must pass
-  - [ ] 9.7 Manual curl testing: send test message, verify Discord delivery, check database log
-  - [ ] 9.8 Update README.md to reflect new Dispatch service documentation
+- [x] 9. Security hardening and final verification
+  - [x] 9.1 Security audit: no API keys leak via query params, logs, or error responses
+  - [x] 9.2 Security audit: all user input sanitized before database storage and Discord forwarding
+  - [x] 9.3 Security audit: error responses in production never expose stack traces or internal details
+  - [x] 9.4 Security audit: tightened Helmet CSP to strict API-only policy (script/style/img: 'none')
+  - [x] 9.5 CORS configuration reviewed - production origins configurable via ALLOWED_ORIGINS env
+  - [x] 9.6 Full test suite: all 134 tests pass
+  - [ ] 9.7 Manual curl testing: requires running server with real Discord webhook (deferred to deploy)
+  - [x] 9.8 README.md rewritten for Dispatch service
+  - [x] 9.9 Removed old server.js (replaced by src/server.ts)
