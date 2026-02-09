@@ -72,3 +72,9 @@ export interface SpamCheckResult {
 export interface AppsConfig {
   [appName: string]: AppConfig
 }
+
+export interface AuthenticatedRequest {
+  appName?: string
+  appConfig?: AppConfig
+  isAdmin?: boolean
+}

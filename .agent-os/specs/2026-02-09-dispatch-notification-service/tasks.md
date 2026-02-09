@@ -23,12 +23,12 @@ These are the tasks to be completed for the spec detailed in @backend/.agent-os/
   - [x] 2.4 Implement db/messages.ts - message CRUD operations
   - [x] 2.5 Verify all database tests pass (24 tests green)
 
-- [ ] 3. Authentication middleware (security-critical)
-  - [ ] 3.1 Write tests for middleware/authenticate.js (missing key, invalid key, valid app key, admin key, no query param auth)
-  - [ ] 3.2 Implement middleware/authenticate.js - resolve API key from X-API-Key header only, lookup app config, reject query param auth
-  - [ ] 3.3 Write test fixture config/apps.json for test environment
-  - [ ] 3.4 Implement config loader that reads apps.json and validates structure on startup
-  - [ ] 3.5 Verify all auth tests pass, confirm query parameter auth is fully removed
+- [x] 3. Authentication middleware (security-critical)
+  - [x] 3.1 Write tests for middleware/authenticate.ts and config/loader.ts (17 tests)
+  - [x] 3.2 Implement config/loader.ts - loadAppsConfig, validateAppsConfig, buildKeyIndex
+  - [x] 3.3 Create test fixture __tests__/fixtures/apps.json
+  - [x] 3.4 Implement middleware/authenticate.ts - X-API-Key header only, app resolution, admin key
+  - [x] 3.5 Verify all 41 tests pass, query param auth fully rejected
 
 - [ ] 4. Input validation and sanitization (security-critical)
   - [ ] 4.1 Write tests for utils/sanitize.js (HTML stripping, XSS prevention, length limits, null handling, Swedish chars)
