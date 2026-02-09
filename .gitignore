@@ -47,4 +47,4 @@ data/*.db-wal
 data/*.db-shm
 
 # Dispatch - App configuration (contains API keys)
-config/apps.json
+src/config/apps.json

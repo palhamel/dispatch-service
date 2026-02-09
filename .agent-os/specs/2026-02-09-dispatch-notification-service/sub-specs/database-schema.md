@@ -77,9 +77,9 @@ CREATE INDEX IF NOT EXISTS idx_messages_app_status ON messages(app, status);
 
 ## Database Initialization
 
-`db/index.js` runs table creation on import:
+`src/db/index.ts` runs table creation on import:
 
-```javascript
+```typescript
 import Database from 'better-sqlite3'
 
 const db = new Database(process.env.DB_PATH || './data/dispatch.db')
@@ -99,7 +99,7 @@ export default db
 
 ## Message CRUD Operations
 
-`db/messages.js` provides:
+`src/db/messages.ts` provides:
 
 - `logMessage(data)` - Insert new message with status "pending"
 - `updateStatus(id, status, response)` - Update after delivery attempt

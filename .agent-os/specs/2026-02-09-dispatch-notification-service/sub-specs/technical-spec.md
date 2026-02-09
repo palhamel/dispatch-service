@@ -9,36 +9,40 @@ This is the technical specification for the spec detailed in @backend/.agent-os/
 
 ### Architecture
 
-Dispatch is a single Express.js server with modular architecture:
+Dispatch is a single Express.js server written in **TypeScript** with modular architecture:
 
 ```
 backend/
-├── server.js                 # Express app setup, middleware, routes
-├── config/
-│   ├── apps.json             # Per-app configuration (API keys, channels)
-│   └── apps.example.json     # Template for apps.json
-├── channels/
-│   └── discord.js            # Discord channel adapter
-├── middleware/
-│   ├── authenticate.js       # API key validation + app resolution
-│   ├── rateLimit.js          # Per-app rate limiting
-│   └── validate.js           # Request payload validation
-├── db/
-│   ├── index.js              # SQLite connection and setup
-│   └── messages.js           # Message CRUD operations
-├── utils/
-│   ├── spam.js               # Spam detection filters
-│   └── sanitize.js           # Input sanitization
+├── src/
+│   ├── server.ts               # Express app setup, middleware, routes
+│   ├── types.ts                # Core type definitions
+│   ├── config/
+│   │   ├── apps.json           # Per-app configuration (API keys, channels)
+│   │   └── apps.example.json   # Template for apps.json
+│   ├── channels/
+│   │   └── discord.ts          # Discord channel adapter
+│   ├── middleware/
+│   │   ├── authenticate.ts     # API key validation + app resolution
+│   │   ├── rateLimit.ts        # Per-app rate limiting
+│   │   └── validate.ts         # Request payload validation
+│   ├── db/
+│   │   ├── index.ts            # SQLite connection and setup
+│   │   └── messages.ts         # Message CRUD operations
+│   └── utils/
+│       ├── spam.ts             # Spam detection filters
+│       └── sanitize.ts         # Input sanitization
+├── __tests__/                  # Vitest tests (.test.ts)
+├── tsconfig.json
 ├── package.json
-├── .env                      # Server-level config (port, admin key, db path)
+├── .env                        # Server-level config (port, admin key, db path)
 ├── .env.example
 └── data/
-    └── dispatch.db           # SQLite database file (gitignored)
+    └── dispatch.db             # SQLite database file (gitignored)
 ```
 
 ### App Configuration Format
 
-File: `config/apps.json`
+File: `src/config/apps.json`
 
 ```json
 {

@@ -136,17 +136,17 @@ This is the tests coverage details for the spec detailed in @backend/.agent-os/s
 backend/
 ├── __tests__/
 │   ├── unit/
-│   │   ├── channels/discord.test.js
-│   │   ├── middleware/authenticate.test.js
-│   │   ├── middleware/validate.test.js
-│   │   ├── utils/spam.test.js
-│   │   ├── utils/sanitize.test.js
-│   │   └── db/messages.test.js
+│   │   ├── channels/discord.test.ts
+│   │   ├── middleware/authenticate.test.ts
+│   │   ├── middleware/validate.test.ts
+│   │   ├── utils/spam.test.ts
+│   │   ├── utils/sanitize.test.ts
+│   │   └── db/messages.test.ts
 │   ├── integration/
-│   │   ├── notify.test.js
-│   │   ├── logs.test.js
-│   │   ├── status.test.js
-│   │   └── health.test.js
+│   │   ├── notify.test.ts
+│   │   ├── logs.test.ts
+│   │   ├── status.test.ts
+│   │   └── health.test.ts
 │   └── fixtures/
 │       └── apps.json
 ```
