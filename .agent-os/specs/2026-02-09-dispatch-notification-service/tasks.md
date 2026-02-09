@@ -42,10 +42,10 @@ These are the tasks to be completed for the spec detailed in @backend/.agent-os/
   - [x] 5.2 Implement utils/spam.ts - spam detection adapted from Kodfika's useSendContactForm.js patterns
   - [x] 5.3 Verify all 90 tests pass, no false positives on normal Swedish text
 
-- [ ] 6. Discord channel adapter
-  - [ ] 6.1 Write tests for channels/discord.js (embed formatting, sender fields, metadata, success/failure handling, timeout)
-  - [ ] 6.2 Implement channels/discord.js - format message as Discord embed and forward to webhook URL
-  - [ ] 6.3 Verify all Discord adapter tests pass with mocked fetch
+- [x] 6. Discord channel adapter
+  - [x] 6.1 Write tests for channels/discord.ts (embed formatting, sender fields, metadata, success/failure handling, timeout)
+  - [x] 6.2 Implement channels/discord.ts - format message as Discord embed and forward to webhook URL
+  - [x] 6.3 Verify all 102 tests pass with mocked fetch
 
 - [ ] 7. Main notify endpoint and server refactor
   - [ ] 7.1 Write integration tests for POST /api/notify (success, auth errors, validation errors, spam, rate limit, channel errors)
