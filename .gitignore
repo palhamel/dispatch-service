@@ -40,3 +40,11 @@ Thumbs.db
 # Build artifacts
 dist/
 build/
+
+# Dispatch - SQLite database
+data/*.db
+data/*.db-wal
+data/*.db-shm
+
+# Dispatch - App configuration (contains API keys)
+config/apps.json

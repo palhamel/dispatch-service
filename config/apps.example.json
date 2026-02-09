@@ -1,0 +1,40 @@
+{
+  "_docs": "Copy this file to apps.json and configure your apps. Each app gets its own API key and channel settings.",
+  "_key_format": "Generate keys with: node -e \"console.log('dk_appname_' + require('crypto').randomBytes(24).toString('hex'))\"",
+
+  "kodfika": {
+    "name": "Kodfika Events Platform",
+    "apiKey": "dk_kodfika_REPLACE_WITH_GENERATED_KEY",
+    "rateLimit": {
+      "windowMs": 900000,
+      "maxRequests": 50
+    },
+    "channels": {
+      "discord": {
+        "webhookUrl": "https://discord.com/api/webhooks/YOUR_WEBHOOK_ID/YOUR_WEBHOOK_TOKEN",
+        "defaultEmbed": {
+          "color": 5814783,
+          "footer": "Via Kodfika"
+        }
+      }
+    }
+  },
+
+  "example-app": {
+    "name": "Example Application",
+    "apiKey": "dk_example_REPLACE_WITH_GENERATED_KEY",
+    "rateLimit": {
+      "windowMs": 900000,
+      "maxRequests": 20
+    },
+    "channels": {
+      "discord": {
+        "webhookUrl": "https://discord.com/api/webhooks/YOUR_WEBHOOK_ID/YOUR_WEBHOOK_TOKEN",
+        "defaultEmbed": {
+          "color": 3447003,
+          "footer": "Via Example App"
+        }
+      }
+    }
+  }
+}
