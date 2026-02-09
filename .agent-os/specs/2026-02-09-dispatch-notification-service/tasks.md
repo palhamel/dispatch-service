@@ -16,12 +16,12 @@ These are the tasks to be completed for the spec detailed in @backend/.agent-os/
   - [x] 1.6 Update .gitignore (data/*.db, config/apps.json)
   - [x] 1.7 Verify project builds and empty test suite runs
 
-- [ ] 2. SQLite database layer
-  - [ ] 2.1 Write tests for db/index.js (table creation, WAL mode, in-memory for tests)
-  - [ ] 2.2 Implement db/index.js - SQLite connection with auto-schema creation
-  - [ ] 2.3 Write tests for db/messages.js (logMessage, updateStatus, getMessages, getStats)
-  - [ ] 2.4 Implement db/messages.js - message CRUD operations
-  - [ ] 2.5 Verify all database tests pass
+- [x] 2. SQLite database layer
+  - [x] 2.1 Write tests for db/index.ts (table creation, WAL mode, in-memory for tests)
+  - [x] 2.2 Implement db/index.ts - SQLite connection with auto-schema creation
+  - [x] 2.3 Write tests for db/messages.ts (logMessage, updateStatus, getMessages, getStats)
+  - [x] 2.4 Implement db/messages.ts - message CRUD operations
+  - [x] 2.5 Verify all database tests pass (24 tests green)
 
 - [ ] 3. Authentication middleware (security-critical)
   - [ ] 3.1 Write tests for middleware/authenticate.js (missing key, invalid key, valid app key, admin key, no query param auth)
