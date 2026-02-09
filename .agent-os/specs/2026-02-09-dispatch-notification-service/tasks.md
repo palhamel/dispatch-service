@@ -54,15 +54,15 @@ These are the tasks to be completed for the spec detailed in @backend/.agent-os/
   - [x] 7.4 Integration tests verify full flow: request → database log → Discord delivery → response
   - [x] 7.5 Verify all 117 tests pass (15 new integration tests)
 
-- [ ] 8. Admin endpoints
-  - [ ] 8.1 Write integration tests for GET /api/logs (admin auth, pagination, filters)
-  - [ ] 8.2 Write integration tests for GET /api/status (admin auth, per-app stats)
-  - [ ] 8.3 Write integration tests for POST /api/test/:channel (admin auth, test message delivery)
-  - [ ] 8.4 Implement GET /api/logs with query filters and pagination
-  - [ ] 8.5 Implement GET /api/status with database aggregation
-  - [ ] 8.6 Implement POST /api/test/:channel with test payload
-  - [ ] 8.7 Update GET /health to reflect new service name and version
-  - [ ] 8.8 Verify all admin endpoint tests pass
+- [x] 8. Admin endpoints
+  - [x] 8.1 Write integration tests for GET /api/logs (admin auth, pagination, filters)
+  - [x] 8.2 Write integration tests for GET /api/status (admin auth, per-app stats)
+  - [x] 8.3 Write integration tests for POST /api/test/:channel (admin auth, test message delivery)
+  - [x] 8.4 Implement GET /api/logs with query filters and pagination
+  - [x] 8.5 Implement GET /api/status with database aggregation
+  - [x] 8.6 Implement POST /api/test/:channel with test payload
+  - [x] 8.7 GET /health already reflects dispatch v2.0.0 (done in Task 7)
+  - [x] 8.8 Verify all 134 tests pass (17 new admin tests)
 
 - [ ] 9. Security hardening and final verification
   - [ ] 9.1 Security audit: verify no API keys can leak via query params, logs, or error responses
