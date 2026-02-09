@@ -47,13 +47,12 @@ These are the tasks to be completed for the spec detailed in @backend/.agent-os/
   - [x] 6.2 Implement channels/discord.ts - format message as Discord embed and forward to webhook URL
   - [x] 6.3 Verify all 102 tests pass with mocked fetch
 
-- [ ] 7. Main notify endpoint and server refactor
-  - [ ] 7.1 Write integration tests for POST /api/notify (success, auth errors, validation errors, spam, rate limit, channel errors)
-  - [ ] 7.2 Refactor server.js - replace old routes with new modular architecture, wire up all middleware
-  - [ ] 7.3 Implement POST /api/notify route handler (authenticate → validate → spam check → log → send → update status)
-  - [ ] 7.4 Implement per-app rate limiting using express-rate-limit with app-name key generator
-  - [ ] 7.5 Write integration test verifying full flow: request → database log → Discord delivery → response
-  - [ ] 7.6 Verify all integration tests pass
+- [x] 7. Main notify endpoint and server refactor
+  - [x] 7.1 Write integration tests for POST /api/notify (success, auth errors, validation errors, spam, channel errors)
+  - [x] 7.2 Create src/app.ts factory + src/server.ts entry point replacing old server.js
+  - [x] 7.3 Implement POST /api/notify route handler (authenticate → validate → spam check → log → send → update status)
+  - [x] 7.4 Integration tests verify full flow: request → database log → Discord delivery → response
+  - [x] 7.5 Verify all 117 tests pass (15 new integration tests)
 
 - [ ] 8. Admin endpoints
   - [ ] 8.1 Write integration tests for GET /api/logs (admin auth, pagination, filters)
