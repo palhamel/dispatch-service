@@ -328,7 +328,7 @@ export const createApp = (options: AppOptions) => {
   })
 
   // --- 404 handler ---
-  app.use('*', (_req, res) => {
+  app.use((_req, res) => {
     res.status(404).json({
       success: false,
       error: 'NOT_FOUND',
