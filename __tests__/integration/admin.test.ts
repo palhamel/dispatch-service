@@ -23,6 +23,13 @@ const testAppsConfig: AppsConfig = {
           footer: 'Via Test App',
         },
       },
+      slack: {
+        webhookUrl: 'https://hooks.slack.com/services/T00/B00/test',
+        defaultFormat: {
+          color: '#36a64f',
+          footer: 'Via Test App',
+        },
+      },
     },
   },
 }
@@ -268,5 +275,20 @@ describe('POST /api/test/:channel', () => {
 
     expect(res.status).toBe(400)
     expect(res.body.success).toBe(false)
+  })
+
+  it('sends test message to configured Slack webhook', async () => {
+    mockFetch.mockResolvedValue({ ok: true, status: 200, text: async () => 'ok' })
+
+    const res = await request(app)
+      .post('/api/test/slack')
+      .set('X-API-Key', TEST_ADMIN_KEY)
+      .send({ app: 'test-app' })
+
+    expect(res.status).toBe(200)
+    expect(res.body.success).toBe(true)
+    expect(res.body.message).toContain('test-app')
+    expect(res.body.message).toContain('slack')
+    expect(mockFetch).toHaveBeenCalledOnce()
   })
 })

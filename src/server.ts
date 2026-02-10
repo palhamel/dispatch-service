@@ -22,6 +22,12 @@ if (!adminApiKey) {
   process.exit(1)
 }
 
+if (adminApiKey.length < 32) {
+  console.error('ADMIN_API_KEY must be at least 32 characters. Generate one with:')
+  console.error("  node -e \"console.log('dk_admin_' + require('crypto').randomBytes(24).toString('hex'))\"")
+  process.exit(1)
+}
+
 // Load app config: env vars (production) > file path > default file (local dev)
 let appsConfig
 try {
@@ -42,6 +48,14 @@ try {
 // Initialize database
 const db = createDatabase(dbPath)
 
+// Rate limiting config
+const rateLimitWindowMs = process.env.RATE_LIMIT_WINDOW_MS
+  ? parseInt(process.env.RATE_LIMIT_WINDOW_MS, 10)
+  : undefined
+const rateLimitMaxRequests = process.env.RATE_LIMIT_MAX_REQUESTS
+  ? parseInt(process.env.RATE_LIMIT_MAX_REQUESTS, 10)
+  : undefined
+
 // Create app
 const { app } = createApp({
   db,
@@ -49,6 +63,8 @@ const { app } = createApp({
   adminApiKey,
   allowedOrigins,
   nodeEnv,
+  rateLimitWindowMs,
+  rateLimitMaxRequests,
 })
 
 // Start server

@@ -9,6 +9,7 @@ export interface AppConfig {
   }
   channels: {
     discord?: DiscordChannelConfig
+    slack?: SlackChannelConfig
   }
 }
 
@@ -16,6 +17,14 @@ export interface DiscordChannelConfig {
   webhookUrl: string
   defaultEmbed?: {
     color?: number
+    footer?: string
+  }
+}
+
+export interface SlackChannelConfig {
+  webhookUrl: string
+  defaultFormat?: {
+    color?: string
     footer?: string
   }
 }

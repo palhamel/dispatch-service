@@ -23,6 +23,13 @@ const testAppsConfig: AppsConfig = {
           footer: 'Via Test App',
         },
       },
+      slack: {
+        webhookUrl: 'https://hooks.slack.com/services/T00/B00/test',
+        defaultFormat: {
+          color: '#36a64f',
+          footer: 'Via Test App',
+        },
+      },
     },
   },
 }
@@ -249,6 +256,46 @@ describe('POST /api/notify', () => {
     const { messages } = messageStore.getMessages({})
     expect(messages[0].status).toBe('failed')
     expect(messages[0].error).toContain('ECONNREFUSED')
+  })
+
+  it('returns 200 and messageId on successful Slack delivery', async () => {
+    mockFetch.mockResolvedValue({ ok: true, status: 200, text: async () => 'ok' })
+
+    const res = await request(app)
+      .post('/api/notify')
+      .set('X-API-Key', TEST_APP_KEY)
+      .send({
+        channel: 'slack',
+        body: 'Hej! Jag undrar om nästa meetup i Malmö.',
+        subject: 'Fråga om meetup',
+        sender: { name: 'Anna Svensson', email: 'anna@example.com' },
+      })
+
+    expect(res.status).toBe(200)
+    expect(res.body.success).toBe(true)
+    expect(res.body.messageId).toBeDefined()
+    expect(res.body.channel).toBe('slack')
+  })
+
+  it('returns 502 when Slack webhook fails', async () => {
+    mockFetch.mockResolvedValue({
+      ok: false,
+      status: 403,
+      text: async () => 'invalid_token',
+    })
+
+    const res = await request(app)
+      .post('/api/notify')
+      .set('X-API-Key', TEST_APP_KEY)
+      .send({
+        channel: 'slack',
+        body: 'Hej! Jag undrar om nästa meetup i Malmö.',
+        subject: 'Fråga om meetup',
+      })
+
+    expect(res.status).toBe(502)
+    expect(res.body.success).toBe(false)
+    expect(res.body.error).toBe('CHANNEL_ERROR')
   })
 })
 

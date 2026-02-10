@@ -1,6 +1,6 @@
 # Dispatch - Notification Microservice
 
-General-purpose notification microservice that routes messages from apps to Discord (and future channels). Multi-app support with per-app API keys, message logging, spam detection, and admin dashboard endpoints.
+General-purpose notification microservice that routes messages from apps to Discord and Slack. Multi-app support with per-app API keys, message logging, spam detection, and admin dashboard endpoints.
 
 ## Quick Start
 
@@ -12,7 +12,7 @@ cp .env.example .env
 cp src/config/apps.example.json src/config/apps.json
 
 # Edit .env with your ADMIN_API_KEY
-# Edit src/config/apps.json with your app configs and Discord webhook URLs
+# Edit src/config/apps.json with your app configs and webhook URLs
 
 # Run
 npm run dev
@@ -31,6 +31,7 @@ src/
     apps.example.json    # Template for apps.json
   channels/
     discord.ts           # Discord webhook adapter (rich embeds)
+    slack.ts             # Slack webhook adapter (Block Kit)
   middleware/
     authenticate.ts      # API key validation (header only, no query params)
     validate.ts          # Request payload validation and sanitization
@@ -95,12 +96,37 @@ curl -X POST http://localhost:3001/api/notify \
 
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
-| `channel` | string | Yes | Target channel (`discord`) |
+| `channel` | string | Yes | Target channel (`discord`, `slack`) |
 | `body` | string | Yes | Message content (10-2000 chars) |
 | `subject` | string | No | Message subject (max 200 chars) |
 | `sender.name` | string | No | Sender name (2-100 chars) |
 | `sender.email` | string | No | Sender email (validated format) |
 | `metadata` | object | No | Extra data (source, URL, etc.) |
+
+## Channel Setup
+
+### Discord
+
+1. Open your Discord server and go to **Server Settings > Integrations > Webhooks**
+2. Click **New Webhook**, choose a channel, and copy the webhook URL
+3. Add the URL to your app config as `DISPATCH_<APP>_DISCORD_WEBHOOK` (env) or `channels.discord.webhookUrl` (JSON)
+
+Optional settings:
+- **Color**: Integer color value for the embed sidebar (e.g. `5814783` for blue)
+- **Footer**: Custom text shown at the bottom of each embed
+
+### Slack
+
+1. Go to [api.slack.com/apps](https://api.slack.com/apps) and create a new app (or use an existing one)
+2. Enable **Incoming Webhooks** under Features
+3. Click **Add New Webhook to Workspace**, select a channel, and copy the webhook URL
+4. Add the URL to your app config as `DISPATCH_<APP>_SLACK_WEBHOOK` (env) or `channels.slack.webhookUrl` (JSON)
+
+Optional settings:
+- **Color**: Hex color string for the attachment sidebar (e.g. `#36a64f` for green)
+- **Footer**: Custom text shown in the context block at the bottom
+
+Each app can have one or both channels configured. The `channel` field in the `/api/notify` request determines where the message is sent.
 
 ## App Configuration
 
@@ -110,9 +136,16 @@ curl -X POST http://localhost:3001/api/notify \
 DISPATCH_APPS=myapp
 DISPATCH_MYAPP_API_KEY=dk_myapp_your-secure-key-here
 DISPATCH_MYAPP_NAME=My Application
+
+# Discord
 DISPATCH_MYAPP_DISCORD_WEBHOOK=https://discord.com/api/webhooks/...
 DISPATCH_MYAPP_DISCORD_COLOR=5814783
 DISPATCH_MYAPP_DISCORD_FOOTER=Via My App
+
+# Slack
+DISPATCH_MYAPP_SLACK_WEBHOOK=https://hooks.slack.com/services/T00/B00/xxxx
+DISPATCH_MYAPP_SLACK_COLOR=#36a64f
+DISPATCH_MYAPP_SLACK_FOOTER=Via My App
 ```
 
 Multiple apps: `DISPATCH_APPS=myapp,support` with separate env vars per app.
@@ -131,6 +164,13 @@ Create `src/config/apps.json` from the example:
         "webhookUrl": "https://discord.com/api/webhooks/...",
         "defaultEmbed": {
           "color": 5814783,
+          "footer": "Via My App"
+        }
+      },
+      "slack": {
+        "webhookUrl": "https://hooks.slack.com/services/...",
+        "defaultFormat": {
+          "color": "#58B9FF",
           "footer": "Via My App"
         }
       }
@@ -156,6 +196,9 @@ node -e "console.log('dk_appname_' + require('crypto').randomBytes(24).toString(
 | `DISPATCH_<APP>_DISCORD_WEBHOOK` | Per app | - | Discord webhook URL |
 | `DISPATCH_<APP>_DISCORD_COLOR` | Per app | - | Embed color (integer) |
 | `DISPATCH_<APP>_DISCORD_FOOTER` | Per app | - | Embed footer text |
+| `DISPATCH_<APP>_SLACK_WEBHOOK` | Per app | - | Slack incoming webhook URL |
+| `DISPATCH_<APP>_SLACK_COLOR` | Per app | - | Sidebar color (hex string, e.g. `#36a64f`) |
+| `DISPATCH_<APP>_SLACK_FOOTER` | Per app | - | Context footer text |
 | `PORT` | No | `3001` | Server port |
 | `NODE_ENV` | No | `development` | Environment mode |
 | `DB_PATH` | No | `./data/dispatch.db` | SQLite database path |
@@ -183,9 +226,9 @@ npm run build        # Compile TypeScript to dist/
 
 ## Testing
 
-142 tests across 11 test files:
+163 tests across 12 test files:
 
-- **Unit tests**: sanitize, spam, validate, authenticate, config loader (file + env), Discord adapter, database
+- **Unit tests**: sanitize, spam, validate, authenticate, config loader (file + env), Discord adapter, Slack adapter, database
 - **Integration tests**: Full request pipeline (notify endpoint, admin endpoints, health)
 
 ```bash

@@ -16,6 +16,13 @@
           "color": 5814783,
           "footer": "Via My App"
         }
+      },
+      "slack": {
+        "webhookUrl": "https://hooks.slack.com/services/YOUR/WEBHOOK/URL",
+        "defaultFormat": {
+          "color": "#58B9FF",
+          "footer": "Via My App"
+        }
       }
     }
   },

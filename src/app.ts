@@ -8,6 +8,7 @@ import express from 'express'
 import cors from 'cors'
 import helmet from 'helmet'
 import morgan from 'morgan'
+import rateLimit from 'express-rate-limit'
 import type Database from 'better-sqlite3'
 import type { AppsConfig } from './types.js'
 import { createAuthMiddleware } from './middleware/authenticate.js'
@@ -15,6 +16,7 @@ import { createValidateMiddleware } from './middleware/validate.js'
 import { createMessageStore } from './db/messages.js'
 import { checkSpam } from './utils/spam.js'
 import { sendDiscord } from './channels/discord.js'
+import { sendSlack } from './channels/slack.js'
 
 interface AppOptions {
   db: Database.Database
@@ -22,10 +24,12 @@ interface AppOptions {
   adminApiKey: string
   allowedOrigins?: string[]
   nodeEnv?: string
+  rateLimitWindowMs?: number
+  rateLimitMaxRequests?: number
 }
 
 export const createApp = (options: AppOptions) => {
-  const { db, appsConfig, adminApiKey, allowedOrigins, nodeEnv } = options
+  const { db, appsConfig, adminApiKey, allowedOrigins, nodeEnv, rateLimitWindowMs, rateLimitMaxRequests } = options
 
   const app = express()
   const messageStore = createMessageStore(db)
@@ -75,6 +79,37 @@ export const createApp = (options: AppOptions) => {
 
   // Body parsing
   app.use(express.json({ limit: '1mb' }))
+
+  // Rate limiting (skip in test to avoid flaky tests)
+  if (nodeEnv !== 'test') {
+    // Global rate limit
+    app.use(rateLimit({
+      windowMs: rateLimitWindowMs ?? 900000, // 15 minutes
+      max: rateLimitMaxRequests ?? 100,
+      standardHeaders: true,
+      legacyHeaders: false,
+      message: {
+        success: false,
+        error: 'RATE_LIMITED',
+        message: 'Too many requests, please try again later',
+        timestamp: new Date().toISOString(),
+      },
+    }))
+
+    // Stricter rate limit on notify endpoint
+    app.use('/api/notify', rateLimit({
+      windowMs: 60000, // 1 minute
+      max: 20,
+      standardHeaders: true,
+      legacyHeaders: false,
+      message: {
+        success: false,
+        error: 'RATE_LIMITED',
+        message: 'Too many notification requests, please try again later',
+        timestamp: new Date().toISOString(),
+      },
+    }))
+  }
 
   // --- Health check (no auth) ---
   app.get('/health', (_req, res) => {
@@ -135,6 +170,8 @@ export const createApp = (options: AppOptions) => {
     let channelResult
     if (channel === 'discord') {
       channelResult = await sendDiscord(appConfig.channels.discord, req.body, appName)
+    } else if (channel === 'slack') {
+      channelResult = await sendSlack(appConfig.channels.slack, req.body, appName)
     } else {
       // Should not reach here (validate middleware checks channel existence)
       messageStore.updateStatus(messageId, 'failed', undefined, `Unsupported channel: ${channel}`)
@@ -262,6 +299,8 @@ export const createApp = (options: AppOptions) => {
     let result
     if (channel === 'discord') {
       result = await sendDiscord(channelConfig as any, testPayload, targetApp)
+    } else if (channel === 'slack') {
+      result = await sendSlack(channelConfig as any, testPayload, targetApp)
     } else {
       res.status(400).json({
         success: false,

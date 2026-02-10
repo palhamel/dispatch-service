@@ -29,6 +29,9 @@ export const loadAppsConfigFromEnv = (env: Record<string, string | undefined> = 
     const discordWebhook = env[`${prefix}_DISCORD_WEBHOOK`]
     const discordColor = env[`${prefix}_DISCORD_COLOR`]
     const discordFooter = env[`${prefix}_DISCORD_FOOTER`]
+    const slackWebhook = env[`${prefix}_SLACK_WEBHOOK`]
+    const slackColor = env[`${prefix}_SLACK_COLOR`]
+    const slackFooter = env[`${prefix}_SLACK_FOOTER`]
 
     if (!apiKey) {
       throw new Error(`${prefix}_API_KEY is required for app "${appName}"`)
@@ -48,8 +51,20 @@ export const loadAppsConfigFromEnv = (env: Record<string, string | undefined> = 
       }
     }
 
+    if (slackWebhook) {
+      channels.slack = {
+        webhookUrl: slackWebhook,
+        ...(slackColor || slackFooter ? {
+          defaultFormat: {
+            ...(slackColor ? { color: slackColor } : {}),
+            ...(slackFooter ? { footer: slackFooter } : {}),
+          },
+        } : {}),
+      }
+    }
+
     if (Object.keys(channels).length === 0) {
-      throw new Error(`App "${appName}" must have at least one channel configured (e.g., ${prefix}_DISCORD_WEBHOOK)`)
+      throw new Error(`App "${appName}" must have at least one channel configured (e.g., ${prefix}_DISCORD_WEBHOOK or ${prefix}_SLACK_WEBHOOK)`)
     }
 
     config[appName] = { name, apiKey, channels }
@@ -76,6 +91,10 @@ export const validateAppsConfig = (config: AppsConfig): void => {
       throw new Error(`App "${appName}": missing or invalid "apiKey" field`)
     }
 
+    if (app.apiKey.length < 20) {
+      throw new Error(`App "${appName}": apiKey must be at least 20 characters`)
+    }
+
     if (seenKeys.has(app.apiKey)) {
       throw new Error(`Duplicate API key found across apps. Each app must have a unique apiKey.`)
     }
@@ -89,6 +108,13 @@ export const validateAppsConfig = (config: AppsConfig): void => {
     if (app.channels.discord) {
       if (!app.channels.discord.webhookUrl || typeof app.channels.discord.webhookUrl !== 'string') {
         throw new Error(`App "${appName}": discord channel missing "webhookUrl"`)
+      }
+    }
+
+    // Validate slack channel if present
+    if (app.channels.slack) {
+      if (!app.channels.slack.webhookUrl || typeof app.channels.slack.webhookUrl !== 'string') {
+        throw new Error(`App "${appName}": slack channel missing "webhookUrl"`)
       }
     }
   }
