@@ -234,7 +234,7 @@ Import `docs/dispatch.postman_collection.json` into Postman to test all endpoint
 
 ## Testing
 
-163 tests across 12 test files:
+164 tests across 12 test files:
 
 - **Unit tests**: sanitize, spam, validate, authenticate, config loader (file + env), Discord adapter, Slack adapter, database
 - **Integration tests**: Full request pipeline (notify endpoint, admin endpoints, health)
