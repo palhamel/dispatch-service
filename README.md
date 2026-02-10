@@ -1,5 +1,11 @@
 # Dispatch - Notification Microservice
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Node.js](https://img.shields.io/badge/Node.js-20%2B-green.svg)](https://nodejs.org/)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue?logo=typescript&logoColor=white)
+[![CI](https://github.com/palhamel/dispatch-service/actions/workflows/pr-checks.yml/badge.svg)](https://github.com/palhamel/dispatch-service/actions/workflows/pr-checks.yml)
+[![Tests](https://img.shields.io/badge/Tests-164%20passing-brightgreen.svg)]()
+
 General-purpose notification microservice that routes messages from apps to Discord and Slack. Multi-app support with per-app API keys, message logging, spam detection, and admin dashboard endpoints.
 
 ## Quick Start
