@@ -1,0 +1,213 @@
+{
+  "info": {
+    "name": "Dispatch Service",
+    "description": "General-purpose notification microservice that routes messages to Discord and Slack.\n\nSetup:\n1. Set `base_url` to your Dispatch instance (default: http://localhost:3001)\n2. Set `app_api_key` to your app's API key\n3. Set `admin_api_key` to your admin key\n4. Set `app_name` to your registered app name",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:3001",
+      "type": "string"
+    },
+    {
+      "key": "app_api_key",
+      "value": "your-app-api-key",
+      "type": "string"
+    },
+    {
+      "key": "admin_api_key",
+      "value": "your-admin-api-key",
+      "type": "string"
+    },
+    {
+      "key": "app_name",
+      "value": "myapp",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Public",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/health",
+              "host": ["{{base_url}}"],
+              "path": ["health"]
+            },
+            "description": "Returns service health status. No authentication required."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Notifications",
+      "item": [
+        {
+          "name": "Send Discord Notification",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-API-Key",
+                "value": "{{app_api_key}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"channel\": \"discord\",\n  \"body\": \"Hello from Dispatch! This is a test notification.\",\n  \"subject\": \"Test Message\",\n  \"sender\": {\n    \"name\": \"Test User\",\n    \"email\": \"test@example.com\"\n  },\n  \"metadata\": {\n    \"source\": \"postman\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/notify",
+              "host": ["{{base_url}}"],
+              "path": ["api", "notify"]
+            },
+            "description": "Send a notification to a Discord channel via webhook. Requires an app API key."
+          },
+          "response": []
+        },
+        {
+          "name": "Send Slack Notification",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-API-Key",
+                "value": "{{app_api_key}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"channel\": \"slack\",\n  \"body\": \"Hello from Dispatch! This is a test notification.\",\n  \"subject\": \"Test Message\",\n  \"sender\": {\n    \"name\": \"Test User\",\n    \"email\": \"test@example.com\"\n  },\n  \"metadata\": {\n    \"source\": \"postman\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/notify",
+              "host": ["{{base_url}}"],
+              "path": ["api", "notify"]
+            },
+            "description": "Send a notification to a Slack channel via webhook. Requires an app API key."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Admin",
+      "item": [
+        {
+          "name": "Get Message Logs",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-API-Key",
+                "value": "{{admin_api_key}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/logs?limit=10",
+              "host": ["{{base_url}}"],
+              "path": ["api", "logs"],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "10",
+                  "description": "Number of log entries to return"
+                }
+              ]
+            },
+            "description": "Query message history with filters. Requires the admin API key."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Service Status",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-API-Key",
+                "value": "{{admin_api_key}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/status",
+              "host": ["{{base_url}}"],
+              "path": ["api", "status"]
+            },
+            "description": "Service status with per-app statistics. Requires the admin API key."
+          },
+          "response": []
+        },
+        {
+          "name": "Test Discord Channel",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-API-Key",
+                "value": "{{admin_api_key}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"app\": \"{{app_name}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/test/discord",
+              "host": ["{{base_url}}"],
+              "path": ["api", "test", "discord"]
+            },
+            "description": "Send a test message to verify Discord channel configuration. Requires the admin API key."
+          },
+          "response": []
+        },
+        {
+          "name": "Test Slack Channel",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-API-Key",
+                "value": "{{admin_api_key}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"app\": \"{{app_name}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/test/slack",
+              "host": ["{{base_url}}"],
+              "path": ["api", "test", "slack"]
+            },
+            "description": "Send a test message to verify Slack channel configuration. Requires the admin API key."
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

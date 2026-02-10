@@ -230,6 +230,8 @@ npm run typecheck    # TypeScript type checking
 npm run build        # Compile TypeScript to dist/
 ```
 
+Import `docs/dispatch.postman_collection.json` into Postman to test all endpoints.
+
 ## Testing
 
 163 tests across 12 test files:
