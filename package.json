@@ -1,0 +1,52 @@
+{
+  "name": "dispatch",
+  "version": "2.0.0",
+  "description": "General-purpose notification microservice - routes messages from apps to Discord, email, and other channels",
+  "main": "dist/server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node dist/server.js",
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc",
+    "lint": "eslint .",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "notifications",
+    "discord",
+    "webhooks",
+    "microservice",
+    "dispatch"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "better-sqlite3": "^12.6.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "express-rate-limit": "^7.1.5",
+    "helmet": "^7.1.0",
+    "morgan": "^1.10.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.37.0",
+    "@types/better-sqlite3": "^7.6.13",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/morgan": "^1.9.10",
+    "@types/node": "^25.2.2",
+    "@types/supertest": "^6.0.3",
+    "eslint": "^9.37.0",
+    "globals": "^16.4.0",
+    "supertest": "^7.2.2",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.18"
+  }
+}

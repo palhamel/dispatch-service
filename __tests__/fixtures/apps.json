@@ -1,0 +1,28 @@
+{
+  "test-app": {
+    "name": "Test Application",
+    "apiKey": "dk_test_abc123secret",
+    "rateLimit": {
+      "windowMs": 900000,
+      "maxRequests": 50
+    },
+    "channels": {
+      "discord": {
+        "webhookUrl": "https://discord.com/api/webhooks/test/token",
+        "defaultEmbed": {
+          "color": 5814783,
+          "footer": "Via Test App"
+        }
+      }
+    }
+  },
+  "other-app": {
+    "name": "Other Application",
+    "apiKey": "dk_other_def456secret",
+    "channels": {
+      "discord": {
+        "webhookUrl": "https://discord.com/api/webhooks/other/token"
+      }
+    }
+  }
+}
