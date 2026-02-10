@@ -1,6 +1,6 @@
 {
   "name": "dispatch",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "General-purpose notification microservice - routes messages from apps to Discord, email, and other channels",
   "main": "dist/server.js",
   "type": "module",
