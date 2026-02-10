@@ -70,7 +70,7 @@ const { app } = createApp({
 // Start server
 app.listen(port, () => {
   const appCount = Object.keys(appsConfig).filter(k => !k.startsWith('_')).length
-  console.log(`\nDispatch v2.0.0 started`)
+  console.log(`\nDispatch v2.1.0 started`)
   console.log(`  URL: http://localhost:${port}`)
   console.log(`  Environment: ${nodeEnv}`)
   console.log(`  Database: ${dbPath}`)

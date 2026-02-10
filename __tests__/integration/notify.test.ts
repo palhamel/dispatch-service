@@ -306,7 +306,7 @@ describe('GET /health', () => {
     expect(res.status).toBe(200)
     expect(res.body.status).toBe('ok')
     expect(res.body.service).toBe('dispatch')
-    expect(res.body.version).toBe('2.0.0')
+    expect(res.body.version).toBe('2.1.0')
   })
 })
 

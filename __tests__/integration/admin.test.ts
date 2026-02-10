@@ -173,7 +173,7 @@ describe('GET /api/status', () => {
     expect(res.status).toBe(200)
     expect(res.body.success).toBe(true)
     expect(res.body.service).toBe('dispatch')
-    expect(res.body.version).toBe('2.0.0')
+    expect(res.body.version).toBe('2.1.0')
     expect(res.body.uptime).toBeDefined()
     expect(res.body.database.totalMessages).toBe(3)
   })

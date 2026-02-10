@@ -116,7 +116,7 @@ export const createApp = (options: AppOptions) => {
     res.json({
       status: 'ok',
       service: 'dispatch',
-      version: '2.0.0',
+      version: '2.1.0',
       uptime: process.uptime(),
       timestamp: new Date().toISOString(),
     })
@@ -243,7 +243,7 @@ export const createApp = (options: AppOptions) => {
     res.json({
       success: true,
       service: 'dispatch',
-      version: '2.0.0',
+      version: '2.1.0',
       uptime: process.uptime(),
       database: {
         totalMessages: stats.totalMessages,
