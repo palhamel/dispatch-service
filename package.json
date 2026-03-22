@@ -1,7 +1,7 @@
 {
   "name": "dispatch",
   "version": "2.1.0",
-  "description": "General-purpose notification microservice - routes messages from apps to Discord, email, and other channels",
+  "description": "General-purpose notification microservice. Routes messages from apps to Discord and Slack.",
   "main": "dist/server.js",
   "type": "module",
   "scripts": {
@@ -20,7 +20,7 @@
     "microservice",
     "dispatch"
   ],
-  "author": "",
+  "author": "palhamel",
   "license": "MIT",
   "dependencies": {
     "better-sqlite3": "^12.6.2",
