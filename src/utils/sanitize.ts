@@ -12,9 +12,10 @@ export const sanitize = (input: unknown): string => {
 
   let str = typeof input === 'string' ? input : String(input)
 
-  // Strip HTML tags then remove any remaining angle brackets (handles <<script>> etc.)
-  str = str.replace(/<[^>]*>/g, '')
-  str = str.replace(/[<>]/g, '')
+  // Strip HTML tags: remove < plus all chars up to the next > (O(n), no backtracking),
+  // then remove any remaining > characters
+  str = str.replace(/<[^>]*/g, '')
+  str = str.replace(/>/g, '')
 
   // Remove javascript: protocol (case insensitive)
   str = str.replace(/javascript\s*:/gi, '')
