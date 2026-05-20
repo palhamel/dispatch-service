@@ -66,7 +66,7 @@ export const createValidateMiddleware = () => {
 
       if (sender.email !== undefined) {
         const sanitizedEmailVal = sanitizeEmail(sender.email)
-        if (!EMAIL_REGEX.test(sanitizedEmailVal)) {
+        if (sanitizedEmailVal.length > 254 || !EMAIL_REGEX.test(sanitizedEmailVal)) {
           validationError(res, "Field 'sender.email' must be a valid email address")
           return
         }

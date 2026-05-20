@@ -56,7 +56,7 @@ export const createApp = (options: AppOptions) => {
       if (!origin) return callback(null, true)
       const isAllowed = origins.some(allowed => {
         if (allowed.includes('*')) {
-          const regex = new RegExp(`^${allowed.replace('*', '.*')}$`)
+          const regex = new RegExp(`^${allowed.replace(/\*/g, '.*')}$`)
           return regex.test(origin)
         }
         return allowed === origin
