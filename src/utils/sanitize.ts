@@ -12,21 +12,25 @@ export const sanitize = (input: unknown): string => {
 
   let str = typeof input === 'string' ? input : String(input)
 
-  // Strip HTML tags (including nested/malformed)
-  // Loop until no more tags remain to handle nested cases like <<script>>
-  let previous = ''
-  while (previous !== str) {
-    previous = str
-    str = str.replace(/<[^>]*>/g, '')
+  // Strip HTML tags: keep only characters that are outside < ... > pairs
+  let stripped = ''
+  let insideTag = false
+  for (const ch of str) {
+    if (ch === '<') { insideTag = true }
+    else if (ch === '>') { insideTag = false }
+    else if (!insideTag) { stripped += ch }
   }
-  // Clean remaining angle brackets from malformed HTML
-  str = str.replace(/</g, '').replace(/>/g, '')
+  str = stripped
 
   // Remove javascript: protocol (case insensitive)
   str = str.replace(/javascript\s*:/gi, '')
 
-  // Remove on* event handlers (e.g., onerror=alert(1), onclick=steal())
-  str = str.replace(/\bon\w+\s*=\s*[^\s]*/gi, '')
+  // Remove on* event handlers — loop until stable to handle nested patterns like ononclick=...
+  let prevOnHandler
+  do {
+    prevOnHandler = str
+    str = str.replace(/\bon\w+\s*=\s*\S*/gi, '')
+  } while (prevOnHandler !== str)
 
   // Collapse multiple spaces into one (but preserve newlines)
   str = str.replace(/[^\S\n]+/g, ' ')

@@ -126,7 +126,7 @@ describe('sendSlack', () => {
     const fieldsSection = blocks.find((b: any) => b.type === 'section' && b.fields)
     const texts = fieldsSection.fields.map((f: any) => f.text)
     expect(texts.some((t: string) => t.includes('contact-form'))).toBe(true)
-    expect(texts.some((t: string) => t.includes('https://myapp.se/about'))).toBe(true)
+    expect(texts.some((t: string) => t === '*url:*\nhttps://myapp.se/about')).toBe(true)
   })
 
   it('uses app-specific color and footer from config', async () => {
