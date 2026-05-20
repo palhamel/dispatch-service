@@ -12,10 +12,17 @@ export const sanitize = (input: unknown): string => {
 
   let str = typeof input === 'string' ? input : String(input)
 
-  // Strip HTML tags: remove < plus all chars up to the next > (O(n), no backtracking),
-  // then remove any remaining > characters
-  str = str.replace(/<[^>]*/g, '')
-  str = str.replace(/>/g, '')
+  // Strip HTML tags by walking the string — keeps text outside tags, drops everything
+  // from < to the next > (inclusive). No regex, no backtracking, O(n).
+  let stripped = ''
+  let insideTag = false
+  for (let i = 0; i < str.length; i++) {
+    const ch = str[i]
+    if (ch === '<') { insideTag = true }
+    else if (ch === '>') { insideTag = false }
+    else if (!insideTag) { stripped += ch }
+  }
+  str = stripped
 
   // Remove javascript: protocol (case insensitive)
   str = str.replace(/javascript\s*:/gi, '')
