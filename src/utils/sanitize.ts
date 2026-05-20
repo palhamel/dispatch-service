@@ -12,12 +12,10 @@ export const sanitize = (input: unknown): string => {
 
   let str = typeof input === 'string' ? input : String(input)
 
-  // Strip HTML tags by walking the string — keeps text outside tags, drops everything
-  // from < to the next > (inclusive). No regex, no backtracking, O(n).
+  // Strip HTML tags: keep only characters that are outside < ... > pairs
   let stripped = ''
   let insideTag = false
-  for (let i = 0; i < str.length; i++) {
-    const ch = str[i]
+  for (const ch of str) {
     if (ch === '<') { insideTag = true }
     else if (ch === '>') { insideTag = false }
     else if (!insideTag) { stripped += ch }
