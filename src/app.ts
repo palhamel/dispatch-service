@@ -32,6 +32,7 @@ export const createApp = (options: AppOptions) => {
   const { db, appsConfig, adminApiKey, allowedOrigins, nodeEnv, rateLimitWindowMs, rateLimitMaxRequests } = options
 
   const app = express()
+  app.set('trust proxy', 1)
   const messageStore = createMessageStore(db)
   const authenticate = createAuthMiddleware(appsConfig, adminApiKey)
   const validate = createValidateMiddleware()
