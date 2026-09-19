@@ -2,7 +2,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Node.js](https://img.shields.io/badge/Node.js-22%2B-green.svg)](https://nodejs.org/)
-![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue?logo=typescript&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-7-blue?logo=typescript&logoColor=white)
 [![CI](https://github.com/palhamel/dispatch-service/actions/workflows/pr-checks.yml/badge.svg)](https://github.com/palhamel/dispatch-service/actions/workflows/pr-checks.yml)
 [![Tests](https://img.shields.io/badge/Tests-164%20passing-brightgreen.svg)]()
 
@@ -216,6 +216,7 @@ node -e "console.log('dk_appname_' + require('crypto').randomBytes(24).toString(
 - **Input sanitization**: HTML stripping, XSS prevention, Swedish character preservation
 - **Spam detection**: 23 patterns across 8 categories (medical, gambling, crypto, adult, marketing, financial, security, contact apps)
 - **Helmet.js**: Strict CSP headers for API service
+- **Pinned CI actions**: All GitHub Actions pinned to full commit SHAs (supply-chain hardening; Dependabot bumps SHAs with version notes)
 - **CORS**: Configurable allowed origins with wildcard support
 - **Message logging**: All messages logged to SQLite (including spam and failures)
 - **Admin separation**: Admin endpoints require separate admin key, app keys cannot access logs/status
