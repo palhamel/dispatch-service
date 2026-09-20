@@ -213,10 +213,12 @@ node -e "console.log('dk_appname_' + require('crypto').randomBytes(24).toString(
 ## Security
 
 - **Header-only auth**: API keys accepted only via `X-API-Key` header (never query params)
+- **Rate limiting**: 100 req/15 min globally, 20 req/min on `/api/notify` (per IP)
 - **Input sanitization**: HTML stripping, XSS prevention, Swedish character preservation
 - **Spam detection**: 23 patterns across 8 categories (medical, gambling, crypto, adult, marketing, financial, security, contact apps)
 - **Helmet.js**: Strict CSP headers for API service
 - **Pinned CI actions**: All GitHub Actions pinned to full commit SHAs (supply-chain hardening; Dependabot bumps SHAs with version notes)
+- **Grouped dependency updates**: Dependabot minor+patch bumps arrive as one bundled weekly PR per ecosystem; major bumps ship individually for careful review
 - **CORS**: Configurable allowed origins with wildcard support
 - **Message logging**: All messages logged to SQLite (including spam and failures)
 - **Admin separation**: Admin endpoints require separate admin key, app keys cannot access logs/status
